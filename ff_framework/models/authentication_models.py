@@ -11,6 +11,7 @@ class User(BaseModel):
 class UserAuthentication(BaseModel):
     username: str
     password: str
+    organization_id: int
     
 class UserRegistration(BaseModel):
     username: str
@@ -18,6 +19,10 @@ class UserRegistration(BaseModel):
     email: Optional[str] = None
     phone_number: Optional[str] = None
     role: Optional[str] = "admin"  
+    organization_id: int
 
 class CreateUserRegistration(BaseModel):
     user_registration: UserRegistration
+    
+class ProcessUserAuthentication(BaseModel):
+    user_authentication: UserAuthentication

@@ -28,11 +28,11 @@ class DatabaseConfig:
             raise ValueError(f"Unsupported database type: {self.db_type}")
         
     def select(self, table_name: str, columns: list = ['*'], condition: str = None):
-        self.logger.log(f"Selecting data from: {table_name}")
+        self.logger.log(f"Selecting data from: {table_name}", level='info')
         str_columns = ', '.join(columns) if len(columns) > 1 else columns[0]
-        data = self.database.select(table_name, str_columns, condition)
+        data = self.connection.select(table_name, str_columns, condition)
         if data.empty:
-            self.logger.log("No data found", 'warning')
+            self.logger.log("No data found", level='warning')
             return pd.DataFrame()
         self.logger.log("Data selected successfully", level='info')
         return data
@@ -59,7 +59,7 @@ class DatabaseConfig:
                 columns = [columns]
             if not isinstance(data, list):
                 data = [data]
-            self.database.update(table_name, columns, data, condition)
+            self.connection.update(table_name, columns, data, condition)
             self.logger.log("Data updated successfully", level='info')
         except Exception as e:
             self.logger.log(f"Error updating data: {e}", level='error')

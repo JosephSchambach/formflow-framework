@@ -9,6 +9,14 @@ def api_obj_config():
                 "context_method": "database",
                 "execution_method": "insert"
             }
+        },
+        "ProcessUserAuthentication": {
+            "parent_method": auth_api.AuthenticationAPI.authenticate_user,
+            "kwargs": {
+                "attribute": "user_authentication",
+                "context_method": "database",
+                "execution_method": "select"
+            }
         }
     }
     return data

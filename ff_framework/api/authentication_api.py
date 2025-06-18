@@ -17,3 +17,20 @@ class AuthenticationAPI:
             "context_method": context_method, 
             "execution_method": execution_method
         }
+        
+    def authenticate_user(self, attribute, context_method, execution_method):
+        authentication_data = getattr(self, attribute)
+        columns = authentication_data.__dict__.keys()
+        values = [getattr(authentication_data, column) for column in columns]
+        condition = {
+            "and": [
+                {"=": [column, value]} for column, value in zip(columns, values)
+            ]
+        }
+        return {
+            "table": "user_authentication", 
+            "columns": columns, 
+            "values": condition, 
+            "context_method": context_method, 
+            "execution_method": execution_method
+        }
