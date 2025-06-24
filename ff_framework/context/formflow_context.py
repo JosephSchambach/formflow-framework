@@ -10,6 +10,7 @@ class FormFlowContext:
         self.logger = ContextLogger()
         self._get_database()
         self._get_api()
+        self._get_form_fields()
         
     
     def _get_api(self):
@@ -43,3 +44,18 @@ class FormFlowContext:
             db_service_role=db_service_role,
             db_api_key=db_api_key
         )
+        
+    def _get_form_fields(self):
+        try:
+            data = self.database.select(
+                table_name="form_mappings",
+                columns=["form_name", "form_fields"],
+                condition={"=": ["form_id", 1]}
+            )
+            if data.empty:
+                self.logger.log("No form fields found for the specified form_id.", level='warning')
+                return
+            self.form_fields = data.to_dict(orient='records')
+        except Exception as e:
+            self.logger.log(f"Error initializing form fields: {e}", level='error')
+            raise e

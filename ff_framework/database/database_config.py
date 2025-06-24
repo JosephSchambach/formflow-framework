@@ -27,7 +27,7 @@ class DatabaseConfig:
             self.logger.log(f"Unsupported database type: {self.db_type}", level='error')
             raise ValueError(f"Unsupported database type: {self.db_type}")
         
-    def select(self, table_name: str, columns: list = ['*'], condition: str = None):
+    def select(self, table_name: str, columns: list = ['*'], condition: dict = None):
         self.logger.log(f"Selecting data from: {table_name}", level='info')
         str_columns = ', '.join(columns) if len(columns) > 1 else columns[0]
         data = self.connection.select(table_name, str_columns, condition)

@@ -11,3 +11,5 @@ test.py
 
 *.pyc
 __pycache__/
+
+form_data/*
