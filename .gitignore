@@ -1,6 +1,13 @@
+cms_form_fields.txt
+
 test.py
 .vercel
 .env
+*.pdf
+*.exe
+
+*python/*
+*.dist-info*
 
 *.pyc
 __pycache__/

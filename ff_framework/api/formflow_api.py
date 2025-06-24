@@ -54,16 +54,16 @@ class FormFlowAPI:
             try:
                 parent_method = kwargs.get("parent_method")
                 kwargs = kwargs.get("kwargs", {})
+                attribute = kwargs.get("attribute", 'no attribute')
                 if log:
-                    self.logger.log(f"Processing {args} with parent method {parent_method}", level='info')
+                    self.logger.log(f"Processing class of type {attribute}", level='info')
                 return parent_method(args, **kwargs)
             except Exception as e:
                 if log: 
-                    self.logger.error(f"Error processing {args}: {e}", level='error')
+                    self.logger.error(f"Error processing {attribute}: {e}", level='error')
                 if _ == retries - 1:
                     if alert:
-                        self.logger.alert(f"Failed to process {args} after {retries} retries", level='error')
+                        self.logger.alert(f"Failed to process {attribute} after {retries} retries", level='error')
                     raise e
-                sleep(retry_interval)
                 continue
     
