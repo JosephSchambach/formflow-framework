@@ -4,9 +4,10 @@ from time import sleep
 
 
 class FormFlowAPI:
-    def __init__(self, logger: ContextLogger, database):
+    def __init__(self, logger: ContextLogger, database, generators):
         self.logger = logger
         self.database = database
+        self.generators = generators
         self.obj_config = api_obj_config()
         
     def create(self, args, log = True, alert = False):
@@ -60,10 +61,10 @@ class FormFlowAPI:
                 return parent_method(args, **kwargs)
             except Exception as e:
                 if log: 
-                    self.logger.error(f"Error processing {attribute}: {e}", level='error')
+                    self.logger.log(f"Error processing {attribute}: {e}", level='error')
                 if _ == retries - 1:
                     if alert:
-                        self.logger.alert(f"Failed to process {attribute} after {retries} retries", level='error')
+                        self.logger.log(f"Failed to process {attribute} after {retries} retries", level='error')
                     raise e
                 continue
     

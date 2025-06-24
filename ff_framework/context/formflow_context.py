@@ -4,21 +4,30 @@ import os
 from ff_framework.context.context_logging import ContextLogger
 from ff_framework.database.database_config import DatabaseConfig
 from ff_framework.api.formflow_api import FormFlowAPI
+from ff_framework.generator.generator_config import GeneratorConfig
 
 class FormFlowContext:
     def __init__(self):
         self.logger = ContextLogger()
         self._get_database()
+        self._get_generators()
         self._get_api()
         self._get_form_fields()
         
+    def _get_generators(self):
+        if not hasattr(self, 'database'):
+            self.logger.log("Database configuration is not set. Cannot initialize generators.", level='error')
+            raise ValueError("Database configuration is not set.")
+        
+        self.generators = GeneratorConfig(logger=self.logger, database=self.database)
+        self.logger.log("Generators initialized successfully.", level='info')
     
     def _get_api(self):
         if not hasattr(self, 'database'):
             self.logger.log("Database configuration is not set. Cannot initialize API.", level='error')
             raise ValueError("Database configuration is not set.")
         
-        self.api = FormFlowAPI(logger=self.logger, database=self.database)
+        self.api = FormFlowAPI(logger=self.logger, database=self.database, generators=self.generators)
         self.logger.log("API initialized successfully.", level='info')       
         
     def _get_database(self):
@@ -49,8 +58,7 @@ class FormFlowContext:
         try:
             data = self.database.select(
                 table_name="form_mappings",
-                columns=["form_name", "form_fields"],
-                condition={"=": ["form_id", 1]}
+                columns=["form_name", "form_fields"]
             )
             if data.empty:
                 self.logger.log("No form fields found for the specified form_id.", level='warning')
