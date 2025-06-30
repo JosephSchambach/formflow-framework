@@ -5,7 +5,7 @@ class GeneratorConfig:
         self.logger = logger
         self.database = database
         self.generators = {
-            "PDFGenerator": PDFGenerator()
+            "PDFGenerator": PDFGenerator(logger, database)
         }
         
     def generate(self, generator_name, *args):

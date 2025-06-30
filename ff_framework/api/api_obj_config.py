@@ -1,7 +1,8 @@
 import ff_framework.api.authentication_api as auth_api
 import ff_framework.api.pdf_api as pdf_api
+import ff_framework.api.formflow_api as api
 
-def api_obj_config():
+def api_obj_config(api = None):
     data = {
         "CreateUserRegistration": {
             "parent_method": auth_api.AuthenticationAPI.register_user,
@@ -35,6 +36,9 @@ def api_obj_config():
                 "context_method": "generators",
                 "execution_method": "generate"
             }
+        },
+        "MailGunEmail": {
+            "parent_method": api._mailgun_api.send
         }
     }
     return data

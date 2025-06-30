@@ -30,7 +30,8 @@ class PDFAPI:
             "columns": {
                 "file_name": self.file_name, 
                 "file_path": self.file_path,
-                "send_email": self.send_email
+                "send_email": self.send_email, 
+                "organization_id": self.organization_id,
             },
             "values": pdf_list,
             "context_method": context_method,
